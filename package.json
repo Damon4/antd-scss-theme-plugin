@@ -37,7 +37,7 @@
   "dependencies": {
     "less": "^4.1.1",
     "loader-utils": "^2.0.0",
-    "scss-to-json": "^2.0.0"
+    "sass-export": "^2.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
@@ -60,7 +60,6 @@
     "node-sass": "^6.0.1",
     "raw-loader": "^4.0.2",
     "rimraf": "^3.0.2",
-    "sass-export": "^2.1.0",
     "sass-loader": "^7.3.0",
     "webpack": "^5.44.0",
     "webpack-node-externals": "^3.0.0"
