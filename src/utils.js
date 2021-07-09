@@ -1,10 +1,9 @@
 import fs from 'fs';
 
 import less from 'less';
-import scssToJson from 'scss-to-json';
+import { exporter } from 'sass-export';
 
 import ExtractVariablesPlugin from './extractVariablesLessPlugin';
-
 
 /**
  * Return values of compiled Less variables from a compilable entry point.
@@ -25,7 +24,7 @@ export const extractLessVariables = (lessEntryPath, variableOverrides = {}) => {
           modifyVars: variableOverrides,
           plugins: [
             new ExtractVariablesPlugin({
-              callback: variables => resolve(variables),
+              callback: (variables) => resolve(variables),
             }),
           ],
         },
@@ -36,20 +35,22 @@ export const extractLessVariables = (lessEntryPath, variableOverrides = {}) => {
   });
 };
 
-
 /**
  * Read variables from a SCSS theme file into an object with Less-style variable names as keys.
  * @param {string} themeScssPath - Path to SCSS file containing only SCSS variables.
  * @return {Object} Object of the form { '@variable': 'value' }.
  */
 export const loadScssThemeAsLess = (themeScssPath) => {
-  let rawTheme;
+  const rawTheme = {};
   try {
-    rawTheme = scssToJson(themeScssPath);
+    const asArray = exporter({ inputFiles: [themeScssPath] }).getArray();
+    asArray.forEach(({ name, compiledValue }) => {
+      rawTheme[name] = compiledValue;
+    });
   } catch (error) {
     throw new Error(
-      `Could not compile the SCSS theme file "${themeScssPath}" for the purpose of variable ` +
-      'extraction. This is likely because it contains a Sass error.',
+      `Could not compile the SCSS theme file "${themeScssPath}" for the purpose of variable `
+      + 'extraction. This is likely because it contains a Sass error.',
     );
   }
   const theme = {};
@@ -59,7 +60,6 @@ export const loadScssThemeAsLess = (themeScssPath) => {
   });
   return theme;
 };
-
 
 /**
  * Use SCSS theme file to seed a full set of Ant Design's theme variables returned in SCSS.
@@ -73,7 +73,7 @@ export const compileThemeVariables = (themeScssPath) => {
   const variableOverrides = themeScssPath ? loadScssThemeAsLess(themeScssPath) : {};
 
   return extractLessVariables(themeEntryPath, variableOverrides)
-    .then(variables => (
+    .then((variables) => (
       Object.entries(variables)
         .map(([name, value]) => `$${name}: ${value};\n`)
         .join('')

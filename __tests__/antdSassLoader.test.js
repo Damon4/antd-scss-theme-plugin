@@ -11,9 +11,8 @@ import {
 import AntdScssThemePlugin from '../src/index';
 import { compileThemeVariables } from '../src/utils';
 
-
 describe('themeImporter', () => {
-  it('produces an importer that allows importing compiled antd variables', async (done) => {
+  it('produces an importer that allows importing compiled antd variables', async () => {
     const themePath = path.resolve(__dirname, 'data/theme.scss');
     const contents = await compileThemeVariables(themePath);
     sass.render({
@@ -22,11 +21,9 @@ describe('themeImporter', () => {
     }, (error, result) => {
       const compiledColor = result.css.toString().match(/background: (.*);/)[1];
       expect(compiledColor).toBe('#faad14');
-      done();
     });
   });
 });
-
 
 describe('overloadSassLoaderOptions', () => {
   const mockImporter = (url, previous, done) => { done(); };
@@ -50,7 +47,7 @@ describe('overloadSassLoaderOptions', () => {
       });
 
       expect(overloadedOptions.importer.length).toBe(2);
-      overloadedOptions.importer.forEach(imp => expect(typeof imp).toBe('function'));
+      overloadedOptions.importer.forEach((imp) => expect(typeof imp).toBe('function'));
     });
   });
 
@@ -70,7 +67,6 @@ describe('overloadSassLoaderOptions', () => {
       });
   });
 });
-
 
 describe('antdSassLoader', () => {
   const outputPath = path.join(__dirname, 'output');

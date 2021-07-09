@@ -2,15 +2,14 @@ import path from 'path';
 
 import { overloadLessLoaderOptions } from '../src/antdLessLoader';
 
-
 describe('overloadLessLoaderOptions', () => {
   it('adds all variables from the scss theme file to the modifyVars property', () => {
     const overloadedOptions = overloadLessLoaderOptions({
       scssThemePath: path.resolve(__dirname, 'data/theme.scss'),
     });
     expect(overloadedOptions.modifyVars).toEqual({
-      '@primary-color': '#f00',
-      '@info-color': '#200',
+      '@primary-color': '#f00000',
+      '@info-color': '#220000',
     });
   });
 
@@ -18,12 +17,12 @@ describe('overloadLessLoaderOptions', () => {
     const overloadedOptions = overloadLessLoaderOptions({
       scssThemePath: path.resolve(__dirname, 'data/theme.scss'),
       modifyVars: {
-        '@primary-color': '#fff',
+        '@primary-color': '#ffffff',
       },
     });
     expect(overloadedOptions.modifyVars).toEqual({
-      '@primary-color': '#fff',
-      '@info-color': '#200',
+      '@primary-color': '#ffffff',
+      '@info-color': '#220000',
     });
   });
 });

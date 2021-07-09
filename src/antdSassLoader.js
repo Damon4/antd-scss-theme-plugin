@@ -9,7 +9,6 @@ import {
   compileThemeVariables,
 } from './utils';
 
-
 /**
  * Utility returning a node-sass importer that provides access to all of antd's theme variables.
  * @param {string} themeScssPath - Path to SCSS file containing Ant Design theme variables.
@@ -31,7 +30,6 @@ export const themeImporter = (themeScssPath, contents) => (url, previousResolve,
   }
   done();
 };
-
 
 /**
  * Modify sass-loader's options so that all antd variables are imported from the SCSS theme file.
@@ -60,7 +58,6 @@ export const overloadSassLoaderOptions = async (options) => {
 
   return newOptions;
 };
-
 
 /**
  * A wrapper around sass-loader which overloads loader options to include a custom importer handling
